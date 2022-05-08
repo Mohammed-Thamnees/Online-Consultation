@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AppointmentStoreValidate;
 use App\Mail\Prescription as MailPrescription;
 use App\Models\Appointment;
 use App\Models\Category;
@@ -65,15 +66,8 @@ class AppointmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AppointmentStoreValidate $request)
     {
-        $this->validate($request, [
-            'patient' => 'required|integer',
-            'date' => 'required|date',
-            'category_id' => 'required|integer',
-            'doctor_id' => 'required|integer'
-        ]);
-
         $day = Carbon::parse($request->date)->format('D');
 
         $exist = Appointment::where('date',$request->date)->where('category_id',$request->category_id)
